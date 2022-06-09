@@ -1,35 +1,21 @@
 ﻿Console.WriteLine("\nEl amanecer de una batalla legendaria se asoma en el horizonte...Alabado sea el sol");
 Console.WriteLine("\n--------------------------Version 1 -------------------\n");
-Console.WriteLine("Cantidad de personas a jugar: ");
-int cant = Convert.ToInt32(Console.ReadLine());
 Console.WriteLine("\n1. Crear personajes");
 Console.WriteLine("2. Salir\n");
 int op = Convert.ToInt32(Console.ReadLine());
 Console.WriteLine("\n------------------------------------------------\n");
 List<personajes> Players = new List<personajes>();
 List<personajes> Jug2 = new List<personajes>();
+Random j = new Random();
+int cant = j.Next(2, 7);
 if (op == 1)
 {
     for (int i = 0; i < cant; i++)
     {
-        Console.WriteLine("Player " + (i + 1) + ": ");
-        Console.WriteLine("Nombre: ");
-        string nombre = Console.ReadLine();
-        Console.WriteLine("\nApodo: ");
-        string apodo = Console.ReadLine();
-        Console.WriteLine("\nFecha de nacimiento: ");
-        DateOnly fecha = DateOnly.Parse(Console.ReadLine());
-        Console.WriteLine("\nElija su clase: ");
-        Console.WriteLine("1. Piromantico");
-        Console.WriteLine("2. Ladron");
-        Console.WriteLine("3. Clerigo");
-        Console.WriteLine("4. Caballero");
-        int tipo = Convert.ToInt32(Console.ReadLine());
-        Datos nuevoDato = new Datos(nombre, apodo, fecha, tipo);
+        Datos nuevoDato = new Datos();
         Caracteristicas aleatoria = new Caracteristicas();
         personajes nuevoPersonaje = new personajes(aleatoria, nuevoDato);
         Players.Add(nuevoPersonaje);
-        Console.WriteLine("\n------------------------------------------------\n");
     }
     Console.WriteLine("1. Mostrar personajes");
     Console.WriteLine("2. Iniciar batalla");
@@ -46,21 +32,7 @@ if (op == 1)
                 Console.WriteLine("Nombre: " + P.Datos.Nombre);
                 Console.WriteLine("Apodo: " + P.Datos.Apodo);
                 Console.WriteLine("Fecha de nacimiento: " + P.Datos.FechaNacimiento);
-                switch (P.Datos.Tipo)
-                {
-                    case 1:
-                        Console.WriteLine("Clase: Piromantico");
-                        break;
-                    case 2:
-                        Console.WriteLine("Clase: Ladron");
-                        break;
-                    case 3:
-                        Console.WriteLine("Clase: Clerigo");
-                        break;
-                    case 4:
-                        Console.WriteLine("Clase: Caballero");
-                        break;
-                }
+                Console.WriteLine("Clase: " + P.Datos.Tipo);
                 Console.WriteLine("\nEstadisticas: ");
                 Console.WriteLine("Velocidad: " + P.Car.Velocidad);
                 Console.WriteLine("Destreza: " + P.Car.Destreza);
@@ -78,63 +50,85 @@ if (op == 1)
             Console.WriteLine("2. Iniciar batalla");
             op2 = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("\n------------------------------------------------\n");
-        }
-        Console.WriteLine("Seleccione los jugadores que combatiran: ");
-        int aux = 1, play1, play2;
-        foreach (personajes P in Players)
-        {
-            Console.WriteLine(aux + ". " + P.Datos.Apodo);
-            aux++;
-        }
-        Console.WriteLine("\n");
-        play1 = Convert.ToInt32(Console.ReadLine());
-        play2 = Convert.ToInt32(Console.ReadLine());
-        Jug2.Add(Players[play1 - 1]);
-        Jug2.Add(Players[play2 - 1]);
-        Batallar batalla = new Batallar();
-        batalla.BatallarNuevo(Jug2);
-    }
-    else
-    {
-        Console.WriteLine("Seleccione los jugadores que combatiran: ");
-        int aux = 1, play1, play2;
-        foreach (personajes P in Players)
-        {
-            Console.WriteLine(aux + ". " + P.Datos.Apodo);
-            aux++;
-        }
-        Console.WriteLine("\n");
-        play1 = Convert.ToInt32(Console.ReadLine());
-        play2 = Convert.ToInt32(Console.ReadLine());
-        Jug2.Add(Players[play1 - 1]);
-        Jug2.Add(Players[play2 - 1]);
-        Random random = new Random();
-        int ind1;
-        while (Players.Count >1)
-        {
 
-            Batallar batalla = new Batallar();
-            int indice = batalla.BatallarNuevo(Jug2);
-            if (indice == 1)
+        }
+        int indice1, indice2;
+        indice1 = j.Next(0, Players.Count);
+        do
+        {
+            indice2 = j.Next(0, Players.Count);
+        } while (indice1 == indice2);
+        personajes Jugador1 = Players[indice1];
+        personajes Jugador2 = Players[indice2];
+        Batallar batalla = new Batallar();
+        bool resultado = true;
+        for (int i = Players.Count; i > 1; i--)
+        {
+            resultado = batalla.BatallarNuevo(Jugador1, Jugador2, Players);
+            Console.WriteLine("\n------------------------------------------------\n");
+            if (resultado)
             {
-                Jug2.Remove(Players[play1 - 1]);
-                Players.Remove(Players[play1 - 1]);
+                Jugador1.Datos.Salud = Jugador1.Datos.SaludInicial;
+                Players.Remove(Jugador2);
+                do
+                {
+                    indice2 = j.Next(0, Players.Count);
+                    Jugador2 = Players[indice2];
+                } while (indice2 == Players.IndexOf(Jugador1) && Players.Count > 1);
+                batalla.MejorarPJ(Jugador1);
             }
             else
             {
-                Jug2.Remove(Players[play2 - 1]);
-                Players.Remove(Players[play2 - 1]);
-
-            }
-            if (Players.Count < 2)
-            {
-                Console.WriteLine("\n------------------------------------------------\n");
-                Console.WriteLine("Inicia el siguiente combate: n");
-                ind1 = random.Next(0, Players.Count);
-                Jug2.Add(Players[ind1]);
+                Jugador2.Datos.Salud = Jugador2.Datos.SaludInicial;
+                Players.Remove(Jugador1);
+                do
+                {
+                    indice1 = j.Next(0, Players.Count);
+                    Jugador1 = Players[indice1];
+                } while (indice1 == Players.IndexOf(Jugador2) && Players.Count > 1);
+                batalla.MejorarPJ(Jugador2);
             }
         }
-
+    }
+    else
+    {
+        int indice1, indice2;
+        indice1 = j.Next(0, Players.Count);
+        do
+        {
+            indice2 = j.Next(0, Players.Count);
+        } while (indice1 == indice2);
+        personajes Jugador1 = Players[indice1];
+        personajes Jugador2 = Players[indice2];
+        Batallar batalla = new Batallar();
+        bool resultado = true;
+        for (int i = Players.Count; i > 1; i--)
+        {
+            resultado = batalla.BatallarNuevo(Jugador1, Jugador2, Players);
+            Console.WriteLine("\n------------------------------------------------\n");
+            if (resultado)
+            {
+                Jugador1.Datos.Salud = Jugador1.Datos.SaludInicial;
+                Players.Remove(Jugador2);
+                do
+                {
+                    indice2 = j.Next(0, Players.Count);
+                    Jugador2 = Players[indice2];
+                } while (indice2 == Players.IndexOf(Jugador1) && Players.Count > 1);
+                batalla.MejorarPJ(Jugador1);
+            }
+            else
+            {
+                Jugador2.Datos.Salud = Jugador2.Datos.SaludInicial;
+                Players.Remove(Jugador1);
+                do
+                {
+                    indice1 = j.Next(0, Players.Count);
+                    Jugador1 = Players[indice1];
+                } while (indice1 == Players.IndexOf(Jugador2) && Players.Count > 1);
+                batalla.MejorarPJ(Jugador2);
+            }
+        }
     }
 }
 else
