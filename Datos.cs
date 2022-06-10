@@ -6,6 +6,7 @@ public class Datos{
     private int edad;
     private int salud;
     private int saludInicial;
+    private int cantpartidas;
 
     public string Tipo { get => tipo; set => tipo = value; }
     public int Edad { get => edad; set => edad = value; }
@@ -14,6 +15,7 @@ public class Datos{
     public string Apodo { get => apodo; set => apodo = value; }
     public string FechaNacimiento { get => fechaNacimiento; set => fechaNacimiento = value; }
     public int SaludInicial { get => saludInicial; set => saludInicial = value; }
+    public int Cantpartidas { get => cantpartidas; set => cantpartidas = value; }
 
     public Datos(){
         Random random=new Random();
@@ -28,5 +30,6 @@ public class Datos{
         Edad=random.Next(0,300);
         Salud=3000;
         SaludInicial=3000;
+        Cantpartidas=0;
     }
 }
