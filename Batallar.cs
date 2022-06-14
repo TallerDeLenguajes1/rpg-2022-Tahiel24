@@ -96,7 +96,7 @@ public class Batallar
     public void subirPuntajes(personajes Ganador, int cantBatallas)
     {
         List<string> cadena = new List<string>();
-        string path = @"C:\TALLERDELENGUAJES1\rpg-2022-Tahiel24";
+        string path = @"C:\TALLERDELENGUAJES1\rpg-2022-Tahiel24"; //Cambiar path segun se necesite
         cadena.Add(Ganador.Datos.Nombre + ',' + Ganador.Datos.Apodo + ',' + "Cantidad de batallas para ganar: " + cantBatallas + ',' + ',' + "Nivel al finalizar la contienda: " + Ganador.Car.Nivel + ',' + DateTime.Now);
         File.WriteAllLines(path + @"\index.csv", cadena);
     }

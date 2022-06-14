@@ -4,7 +4,9 @@ public class personajes{
 
     public Datos Datos { get => datos; set => datos = value; }
     public Caracteristicas Car { get => car; set => car = value; }
-
+    public personajes(){
+      
+    }
     public personajes(Caracteristicas carac, Datos Dat){
         Datos=Dat;
         Car=carac;
