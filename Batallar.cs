@@ -29,16 +29,17 @@ public class Batallar
             if (jugador2.Datos.Salud < jugador1.Datos.Salud)
             {
                 Console.WriteLine("El ganador es el jugador " + jugador1.Datos.Nombre);
-                resultado=true;
+                resultado = true;
             }
             else
             {
                 Console.WriteLine("El ganador es el jugador " + jugador2.Datos.Nombre);
-                resultado=false;
+                resultado = false;
             }
 
             Console.WriteLine("\n------------------------------------------------\n");
-            if(resultado){
+            if (resultado)
+            {
                 jugador1.Datos.Salud = jugador1.Datos.SaludInicial;
                 ListaJugadores.Remove(jugador2);
                 do
@@ -48,7 +49,9 @@ public class Batallar
                 } while (indice2 == ListaJugadores.IndexOf(jugador1) && ListaJugadores.Count > 1);
                 MejorarPJ(jugador1);
                 jugador1.Datos.Cantpartidas++;
-            }else{
+            }
+            else
+            {
                 jugador2.Datos.Salud = jugador2.Datos.SaludInicial;
                 ListaJugadores.Remove(jugador1);
                 do
@@ -60,8 +63,8 @@ public class Batallar
                 jugador2.Datos.Cantpartidas++;
             }
         }
-        personajes Ganador=ListaJugadores[0];
-        subirPuntajes(Ganador,Ganador.Datos.Cantpartidas); 
+        personajes Ganador = ListaJugadores[0];
+        subirPuntajes(Ganador, Ganador.Datos.Cantpartidas);
     }
 
     public void Ataque(personajes P, personajes Defensor)
@@ -94,11 +97,8 @@ public class Batallar
     {
         List<string> cadena = new List<string>();
         string path = @"C:\TALLERDELENGUAJES1\rpg-2022-Tahiel24";
-        if(Directory.Exists(path)){
-            cadena.Add(Ganador.Datos.Nombre + ',' + Ganador.Datos.Apodo + ',' + "Cantidad de batallas para ganar: " + cantBatallas + ',' + ',' + "Nivel al finalizar la contienda: " + Ganador.Car.Nivel + ',' + DateTime.Now);
-            File.WriteAllLines(path, cadena);
-        }
-        
+        cadena.Add(Ganador.Datos.Nombre + ',' + Ganador.Datos.Apodo + ',' + "Cantidad de batallas para ganar: " + cantBatallas + ',' + ',' + "Nivel al finalizar la contienda: " + Ganador.Car.Nivel + ',' + DateTime.Now);
+        File.WriteAllLines(path + @"\index.csv", cadena);
     }
 
 }
