@@ -1,4 +1,13 @@
-public class Datos{
+//Librerias
+using System.Net;
+using System.Text.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json.Serialization;
+
+public class Datos
+{
+    //Atributos de la clase
     private string tipo;
     private string nombre;
     private string apodo;
@@ -8,6 +17,7 @@ public class Datos{
     private int saludInicial;
     private int cantpartidas;
 
+    //Propiedades
     public string Tipo { get => tipo; set => tipo = value; }
     public int Edad { get => edad; set => edad = value; }
     public int Salud { get => salud; set => salud = value; }
@@ -17,19 +27,44 @@ public class Datos{
     public int SaludInicial { get => saludInicial; set => saludInicial = value; }
     public int Cantpartidas { get => cantpartidas; set => cantpartidas = value; }
 
-    public Datos(){
-        Random random=new Random();
+    //Constructora
+    public Datos()
+    {
+        Random random = new Random();
         string []tipos=new string[]{"Piromantico", "Caballero", "Clerigo","Perdido"};
-        string[]nombres=new string[]{"Jorge", "Agustin", "Jesus", "Tahiel", "Tomas", "Ezequiel","Juan", "Pedro", "Ezequias", "Isaac"};
-        string[]fechas=new string[]{"27/09/2001", "20/10/2001", "27/11/2000", "12/08/2000", "09/05/1990"};
-        string[]apodos=new string[]{"Tahiel24", "PolentaConVodka", "ElSabalero","trollSupremo", "ElCuernos"};
-        Nombre=nombres[random.Next(0,9)];
-        FechaNacimiento=fechas[random.Next(0,4)];
+        consumirAPI();
         Tipo=tipos[random.Next(0,3)];
-        Apodo=apodos[random.Next(0,4)];
-        Edad=random.Next(0,300);
-        Salud=3000;
-        SaludInicial=3000;
-        Cantpartidas=0;
+        Salud = 3000;
+        SaludInicial = 3000;
+        Cantpartidas = 0;
+    }
+
+    //Metodo para consumir un WebService
+    public void consumirAPI()
+    {
+        string url = @"https://api.generadordni.es/v2/profiles/person";
+        var request = (HttpWebRequest)WebRequest.Create(url);
+        request.Method = "GET";
+        request.ContentType = "application/json";
+        request.Accept = "application/json";
+        List<MisDatos> enlistarDatos=new List<MisDatos>();
+        try
+        {
+            WebResponse response = request.GetResponse();
+            Stream strReader = response.GetResponseStream();
+            if (strReader == null) return;
+            StreamReader objReader = new StreamReader(strReader);
+            string responseBody = objReader.ReadToEnd();
+            enlistarDatos = JsonSerializer.Deserialize<List<MisDatos>>(responseBody);
+            Random r=new Random();
+            Nombre=enlistarDatos[r.Next(0,enlistarDatos.Count)].Name;
+            FechaNacimiento=enlistarDatos[r.Next(0,enlistarDatos.Count)].Birthdate;
+            Apodo=enlistarDatos[r.Next(0,enlistarDatos.Count)].Username;
+            Edad=enlistarDatos[r.Next(0,enlistarDatos.Count)].Age;
+        }
+        catch (WebException error)
+        {
+            Console.WriteLine("Se ha producido un error al intentar comunicarse con la API");
+        }
     }
 }

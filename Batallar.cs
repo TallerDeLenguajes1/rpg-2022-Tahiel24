@@ -1,10 +1,12 @@
-//Funcion para la batalla
+//Clase para las batallas
 public class Batallar
 {
+    //Constructora vacia
     public Batallar()
     {
     }
 
+    //Metodo principal
     public void BatallarNuevo(List<personajes> ListaJugadores)
     {
         Random j = new Random();
@@ -67,6 +69,7 @@ public class Batallar
         subirPuntajes(Ganador, Ganador.Datos.Cantpartidas);
     }
 
+    //Metodo para medir el ataque
     public void Ataque(personajes P, personajes Defensor)
     {
         int poderDisparo, efectividadDisparo, ValorAtaque, poderDefensa, maxProv = 50000, danoProvocado;
@@ -82,6 +85,7 @@ public class Batallar
         Defensor.Datos.Salud -= danoProvocado;
     }
 
+    //Metodo para mejorar el personaje despues de cada pelea
     public void MejorarPJ(personajes P)
     {
         P.Datos.SaludInicial += 200;
@@ -93,12 +97,13 @@ public class Batallar
         P.Car.Nivel += 1;
     }
 
+    //Metodo para guardar en el csv a los ganadores
     public void subirPuntajes(personajes Ganador, int cantBatallas)
     {
         List<string> cadena = new List<string>();
         string path = @"C:\TALLERDELENGUAJES1\rpg-2022-Tahiel24"; //Cambiar path segun se necesite
         cadena.Add(Ganador.Datos.Nombre + ',' + Ganador.Datos.Apodo + ',' + "Cantidad de batallas para ganar: " + cantBatallas + ',' + ',' + "Nivel al finalizar la contienda: " + Ganador.Car.Nivel + ',' + DateTime.Now);
-        File.WriteAllLines(path + @"\index.csv", cadena);
+        File.AppendAllLines(path + @"\index.csv", cadena); //Valido con WriteAllLines
     }
 
 }
