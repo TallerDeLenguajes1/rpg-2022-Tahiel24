@@ -9,8 +9,8 @@ Random j = new Random();
 //Inicio del RPG
 Console.WriteLine("\nEl amanecer de una batalla legendaria se asoma en el horizonte...Alabado sea el sol");
 Console.WriteLine("\n--------------------------Version Definitiva -------------------\n");
-Console.WriteLine("1. Crear personajes(Aleatorio)");
-Console.WriteLine("2. Leer personaje guardado");
+Console.WriteLine("1. Tomar guerreros inscriptos");             //Generar jugadores aleatorios
+Console.WriteLine("2. Tomar copias de almas guardadas en el Vacio");       //Jugadores guardados en el JSON
 Console.WriteLine("3. Salir\n");
 int op = Convert.ToInt32(Console.ReadLine());
 Console.WriteLine("\n------------------------------------------------\n");

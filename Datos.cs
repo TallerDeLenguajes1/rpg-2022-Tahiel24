@@ -34,13 +34,13 @@ public class Datos
         string []tipos=new string[]{"Piromantico", "Caballero", "Clerigo","Perdido"};
         consumirAPI();
         Tipo=tipos[random.Next(0,3)];
-        Salud = 5000;
-        SaludInicial = 5000;
+        Salud = 8000;
+        SaludInicial = 8000;
         Cantpartidas = 0;
     }
 
     //Metodo para consumir un WebService
-    public void consumirAPI()
+    private void consumirAPI()
     {
         string url = @"https://api.generadordni.es/v2/profiles/person";
         var request = (HttpWebRequest)WebRequest.Create(url);

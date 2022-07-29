@@ -35,17 +35,19 @@ public class Batallar
                 Ataque(jugador2, jugador1);
                 Console.WriteLine("**************************************");
                 Console.WriteLine("\n");
+                if(jugador2.Datos.Salud<0)break;
+                else if(jugador1.Datos.Salud<0) break;
             }
             if (jugador2.Datos.Salud < jugador1.Datos.Salud)
             {
-                Console.WriteLine("El ganador es " + jugador1.Datos.Nombre + ", orgulloso guerrero " + jugador1.Datos.Tipo + "." + " Se le dara una botella de Estus para continuar el combate");
-                Console.WriteLine("El combatiente " + jugador2.Datos.Nombre + "ha perdido. Sera arrojado al Abismo sin compasion");
+                Console.WriteLine("El ganador es " + jugador1.Datos.Nombre + ", orgulloso guerrero " + jugador1.Datos.Tipo + "." + " Se le dara una botella de Estus para continuar el combate.Caracteristicas fisicas ascendidas");
+                Console.WriteLine("El combatiente " + jugador2.Datos.Nombre + " ha perdido. Sera arrojado al Abismo sin compasion");
                 resultado = true;
             }
             else
             {
-                Console.WriteLine("El ganador es el jugador " + jugador2.Datos.Nombre + "orgulloso guerrero" + jugador2.Datos.Tipo + "." + " Se le dara una botella de Estus para continuar el combate");
-                Console.WriteLine("El combatiente " + jugador1.Datos.Nombre + "ha perdido. Sera arrojado al Abismo sin compasion");
+                Console.WriteLine("El ganador es el jugador " + jugador2.Datos.Nombre + ", orgulloso guerrero" + jugador2.Datos.Tipo + "." + " Se le dara una botella de Estus para continuar el combate.Caracteristicas fisicas ascendidas");
+                Console.WriteLine("El combatiente " + jugador1.Datos.Nombre + " ha perdido. Sera arrojado al Abismo sin compasion");
                 resultado = false;
             }
 
@@ -83,8 +85,8 @@ public class Batallar
                 jugador2.Datos.Cantpartidas++;
             }
         }
-        personajes Ganador = ListaJugadores[0];
         //Subir puntajes en el csv
+        personajes Ganador = ListaJugadores[0];
         subirPuntajes(Ganador, Ganador.Datos.Cantpartidas);
         //Anunciar al ganador definitivo
         Console.WriteLine("\n");
@@ -104,35 +106,36 @@ public class Batallar
     }
 
     //Metodo para medir el ataque
-    public void Ataque(personajes P, personajes Defensor)
+    private void Ataque(personajes P, personajes Defensor)
     {
         int poderDisparo, efectividadDisparo, ValorAtaque, poderDefensa, maxProv = 50000, danoProvocado;
-        Console.WriteLine("Jugador " + P.Datos.Nombre + ": ");
-        Console.WriteLine("Apodo: " + P.Datos.Apodo);
+        Console.WriteLine("Jugador atacante " + P.Datos.Nombre + ": ");
+        Console.WriteLine("Apodo del atacante: " + P.Datos.Apodo);
         poderDisparo = P.Car.Destreza * P.Car.Fuerza * P.Car.Nivel;
         Random a = new Random();
         efectividadDisparo = a.Next(0, 100);
         ValorAtaque = poderDisparo * efectividadDisparo;
         poderDefensa = P.Car.Armadura * P.Car.Velocidad;
         danoProvocado = (((ValorAtaque * efectividadDisparo) - poderDefensa) / maxProv) * 100;
-        Console.WriteLine("Daño ocasionado: " + danoProvocado);
+        Console.WriteLine("Daño ocasionado al defensor: " + danoProvocado);
         Defensor.Datos.Salud -= danoProvocado;
+        Console.WriteLine("Salud restante de "+Defensor.Datos.Nombre+": "+Defensor.Datos.Salud);
     }
 
     //Metodo para mejorar el personaje despues de cada pelea
-    public void MejorarPJ(personajes P)
+    private void MejorarPJ(personajes P)
     {
-        P.Datos.SaludInicial += 200;
-        P.Datos.Salud += 200;
-        P.Car.Armadura += 2;
+        P.Datos.SaludInicial += 500;
+        P.Datos.Salud += 500;
+        P.Car.Armadura += 5;
         P.Car.Destreza += 2;
-        P.Car.Fuerza += 2;
-        P.Car.Velocidad += 2;
+        P.Car.Fuerza += 4;
+        P.Car.Velocidad += 3;
         P.Car.Nivel += 1;
     }
 
     //Metodo para guardar en el csv a los ganadores
-    public void subirPuntajes(personajes Ganador, int cantBatallas)
+    private void subirPuntajes(personajes Ganador, int cantBatallas)
     {
         List<string> cadena = new List<string>();
         string path = @"C:\TALLERDELENGUAJES1\rpg-2022-Tahiel24"; //Cambiar path segun se necesite
