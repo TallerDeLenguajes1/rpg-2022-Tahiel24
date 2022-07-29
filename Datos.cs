@@ -17,7 +17,7 @@ public class Datos
     private int saludInicial;
     private int cantpartidas;
 
-    //Propiedades
+    //Propiedades getter y setter
     public string Tipo { get => tipo; set => tipo = value; }
     public int Edad { get => edad; set => edad = value; }
     public int Salud { get => salud; set => salud = value; }
@@ -34,8 +34,8 @@ public class Datos
         string []tipos=new string[]{"Piromantico", "Caballero", "Clerigo","Perdido"};
         consumirAPI();
         Tipo=tipos[random.Next(0,3)];
-        Salud = 3000;
-        SaludInicial = 3000;
+        Salud = 5000;
+        SaludInicial = 5000;
         Cantpartidas = 0;
     }
 
@@ -56,6 +56,7 @@ public class Datos
             StreamReader objReader = new StreamReader(strReader);
             string responseBody = objReader.ReadToEnd();
             enlistarDatos = JsonSerializer.Deserialize<List<MisDatos>>(responseBody);
+            //Usar los datos deserializados
             Random r=new Random();
             Nombre=enlistarDatos[r.Next(0,enlistarDatos.Count)].Name;
             FechaNacimiento=enlistarDatos[r.Next(0,enlistarDatos.Count)].Birthdate;
